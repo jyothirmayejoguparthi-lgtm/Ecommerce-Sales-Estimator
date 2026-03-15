@@ -307,4 +307,4 @@ Insights
 )
 
 st.markdown("---")
-st.markdown("Built using Python, Machine Learning, and Streamlit")
+st.markdown("Developed by Jyothirmaye | Machine Learning Project")
