@@ -3,6 +3,7 @@
 A Machine Learning web application that predicts estimated sales revenue for e-commerce products based on product and customer attributes.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)(https://ecommerce-sales-estimator-xuaqw52ngidnkqmw9fygax.streamlit.app)
+![App Screenshot](app_screenshot.png)
 
 ## 🚀 Live Demo
 🔗 https://ecommerce-sales-estimator-xuaqw52ngidnkqmw9fygax.streamlit.app
