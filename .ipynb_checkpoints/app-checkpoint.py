@@ -1,310 +1,225 @@
+# =========================================================
+# 🚀 E-COMMERCE AI SUITE (ULTIMATE VERSION)
+# =========================================================
+
 import streamlit as st
-import joblib
+import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# -----------------------------
-# PAGE CONFIGURATION
-# -----------------------------
+# =========================================================
+# PAGE CONFIG
+# =========================================================
 
 st.set_page_config(
-    page_title="E-Commerce Sales Estimator",
-    page_icon="🛒",
+    page_title="E-Commerce AI Suite",
+    page_icon="🚀",
     layout="wide"
 )
 
-# -----------------------------
-# LOAD MODEL AND DATA
-# -----------------------------
-
-model = joblib.load("sales_estimator_model.pkl")
-df = pd.read_csv("ecommerce_clothing_sales_dataset.xls")
-
-# -----------------------------
-# TITLE
-# -----------------------------
-
-st.title("🛒 E-Commerce Sales Estimator Dashboard")
-
-st.markdown(
-"""
-This dashboard predicts **estimated sales revenue** using a machine learning model.
-
-Inputs used by the model:
-• Quantity  
-• Unit Price  
-• Discount Percentage  
-• Customer Age  
-• Profit Margin
-"""
-)
-
-st.info(
-"""
-Example Input
-
-Quantity = 10  
-Unit Price = 50  
-Discount = 5  
-Customer Age = 30  
-Profit Margin = 20
-"""
-)
-
-# -----------------------------
-# SIDEBAR INPUTS
-# -----------------------------
-
-st.sidebar.header("Input Product Details")
-
-quantity = st.sidebar.number_input("Quantity", min_value=1, value=1)
-price = st.sidebar.number_input("Unit Price ($)", min_value=0.0, value=50.0)
-discount = st.sidebar.number_input("Discount (%)", min_value=0.0, value=5.0)
-age = st.sidebar.number_input("Customer Age", min_value=10, value=30)
-margin = st.sidebar.number_input("Profit Margin (%)", min_value=0.0, value=20.0)
-
-predict_button = st.sidebar.button("Predict Sales Revenue")
-
-# Dataset statistics
-avg_price = df["unit_price"].mean()
-avg_quantity = df["quantity"].mean()
-dataset_size = len(df)
-
-# -----------------------------
-# PREDICTION SECTION
-# -----------------------------
-
-if predict_button:
-
-    input_data = np.array([[quantity, price, age, discount, margin]])
-
-    with st.spinner("Calculating prediction..."):
-        prediction = model.predict(input_data)
-
-    st.metric("Estimated Sales Revenue", f"${prediction[0]:.2f}")
-
-    if price > avg_price:
-        price_comment = "Entered price is higher than the dataset average."
-    else:
-        price_comment = "Entered price is lower than the dataset average."
-
-    if quantity > avg_quantity:
-        quantity_comment = "Entered quantity is above the average purchase quantity."
-    else:
-        quantity_comment = "Entered quantity is below the average purchase quantity."
-
-    st.success(
-        f"""
-Prediction Insight
-
-{price_comment}
-
-{quantity_comment}
-
-Estimated revenue based on inputs: **${prediction[0]:.2f}**
-"""
-    )
-
-st.divider()
-
-# -----------------------------
-# DATASET OVERVIEW
-# -----------------------------
-
-st.header("Dataset Overview")
-
-col1, col2, col3 = st.columns(3)
-
-col1.metric("Average Product Price", f"{avg_price:.2f}")
-col2.metric("Average Quantity Sold", f"{avg_quantity:.2f}")
-col3.metric("Dataset Size", dataset_size)
-
-st.divider()
-
-# -----------------------------
-# SCATTER PLOT
-# -----------------------------
-
-st.subheader("Price vs Quantity Relationship")
-
-fig1, ax1 = plt.subplots()
-
-ax1.scatter(df["unit_price"], df["quantity"], alpha=0.6, color="steelblue")
-ax1.set_xlabel("Unit Price")
-ax1.set_ylabel("Quantity Sold")
-ax1.grid(True, linestyle="--", alpha=0.5)
-
-st.pyplot(fig1)
-
-st.divider()
-
-# -----------------------------
-# QUANTITY DISTRIBUTION
-# -----------------------------
-
-st.subheader("Quantity Distribution")
-
-fig2, ax2 = plt.subplots()
-
-df["quantity"].value_counts().sort_index().plot(
-    kind="bar",
-    ax=ax2,
-    color="teal",
-    edgecolor="black"
-)
-
-ax2.set_xlabel("Quantity Sold")
-ax2.set_ylabel("Frequency")
-ax2.grid(True, linestyle="--", alpha=0.5)
-
-st.pyplot(fig2)
-
-st.divider()
-
-# -----------------------------
-# PRICE DISTRIBUTION
-# -----------------------------
-
-st.subheader("Price Distribution")
-
-fig3, ax3 = plt.subplots()
-
-ax3.hist(
-    df["unit_price"],
-    bins=20,
-    color="skyblue",
-    edgecolor="black",
-    linewidth=1.2
-)
-
-ax3.set_xlabel("Unit Price")
-ax3.set_ylabel("Frequency")
-ax3.grid(True, linestyle="--", alpha=0.5)
-
-st.pyplot(fig3)
-
-st.divider()
-
-# -----------------------------
-# CORRELATION HEATMAP
-# -----------------------------
-import seaborn as sns
-
-st.subheader("Feature Correlation Heatmap")
+# =========================================================
+# CUSTOM CSS (PREMIUM UI)
+# =========================================================
 
 st.markdown("""
-This heatmap shows how different features in the dataset are related to each other.
+<style>
+body {
+    background-color: #0E1117;
+}
+.stMetric {
+    background-color: #1c1f26;
+    padding: 15px;
+    border-radius: 10px;
+}
+h1, h2, h3 {
+    color: white;
+}
+</style>
+""", unsafe_allow_html=True)
 
-• Red → Strong positive correlation  
-• Blue → Negative correlation  
-• Darker colors indicate stronger relationships
-""")
+# =========================================================
+# LOAD MODEL + DATA
+# =========================================================
 
-corr = df.corr(numeric_only=True)
+model = pickle.load(open("sales_model.pkl", "rb"))
+data = pd.read_csv("olist_order_items_dataset.csv")
 
-fig, ax = plt.subplots(figsize=(12,8))
+# =========================================================
+# SIDEBAR NAVIGATION
+# =========================================================
 
-sns.heatmap(
-    corr,
-    cmap="coolwarm",
-    center=0,
-    linewidths=0.5,
-    cbar=True
+st.sidebar.title("🚀 AI Control Panel")
+
+page = st.sidebar.radio(
+    "Navigate",
+    ["🏠 Dashboard", "📊 Insights", "🤖 Prediction", "📄 Report"]
 )
 
-plt.xticks(rotation=45, ha="right")
-plt.yticks(rotation=0)
+# =========================================================
+# 🏠 DASHBOARD
+# =========================================================
 
-st.pyplot(fig)
-# -----------------------------
-# FEATURE IMPORTANCE
-# -----------------------------
+if page == "🏠 Dashboard":
 
-st.header("Feature Importance")
+    st.title("🛒 E-Commerce AI Dashboard")
+    st.markdown("### 📊 Business Overview")
 
-features = [
-    "Quantity",
-    "Unit Price",
-    "Customer Age",
-    "Discount Percentage",
-    "Profit Margin"
-]
+    avg_price = data["price"].mean()
+    avg_ship = data["freight_value"].mean()
+    total_orders = len(data)
 
-importances = model.feature_importances_
+    col1, col2, col3 = st.columns(3)
 
-fig5, ax5 = plt.subplots()
+    col1.metric("💰 Avg Price", f"₹{avg_price:.2f}")
+    col2.metric("🚚 Avg Shipping", f"₹{avg_ship:.2f}")
+    col3.metric("📦 Orders", total_orders)
 
-ax5.barh(features, importances, color="teal")
-ax5.set_xlabel("Importance Score")
+    st.divider()
 
-st.pyplot(fig5)
+    col4, col5 = st.columns(2)
 
-st.divider()
+    with col4:
+        st.subheader("📊 Price Distribution")
+        fig, ax = plt.subplots()
+        sns.histplot(data["price"], bins=30, kde=True, ax=ax)
+        ax.set_xlabel("Price")
+        ax.set_ylabel("Frequency")
+        st.pyplot(fig)
 
-# -----------------------------
-# MODEL PERFORMANCE
-# -----------------------------
+    with col5:
+        st.subheader("🚚 Shipping Distribution")
+        fig, ax = plt.subplots()
+        sns.histplot(data["freight_value"], bins=30, kde=True, ax=ax)
+        ax.set_xlabel("Shipping Cost")
+        st.pyplot(fig)
 
-st.header("Model Performance")
+# =========================================================
+# 📊 INSIGHTS
+# =========================================================
 
-r2 = 0.98
-mae = 12.3
-rmse = 18.7
+elif page == "📊 Insights":
 
-col4, col5, col6 = st.columns(3)
+    st.title("📊 Advanced Data Insights")
 
-col4.metric("R² Score", r2)
-col5.metric("MAE", mae)
-col6.metric("RMSE", rmse)
+    col1, col2 = st.columns(2)
 
-st.markdown(
-"""
-R² Score measures how well the model explains revenue variance.
+    with col1:
+        st.subheader("📉 Price vs Shipping")
+        fig, ax = plt.subplots()
+        sns.scatterplot(x=data["price"], y=data["freight_value"], ax=ax)
+        ax.set_xlabel("Price")
+        ax.set_ylabel("Shipping Cost")
+        st.pyplot(fig)
 
-MAE shows the average prediction error.
+    with col2:
+        st.subheader("🔥 Correlation Heatmap")
+        corr = data[["price", "freight_value"]].corr()
+        fig, ax = plt.subplots()
+        sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+        st.pyplot(fig)
 
-RMSE penalizes larger prediction errors.
-"""
-)
+    st.info("📌 Insight: Higher priced items tend to have slightly higher shipping costs.")
 
-st.divider()
+# =========================================================
+# 🤖 PREDICTION ENGINE
+# =========================================================
 
-# -----------------------------
-# DATASET INSIGHTS
-# -----------------------------
+elif page == "🤖 Prediction":
 
-st.header("Dataset Insights")
+    st.title("🤖 Smart Revenue Prediction")
 
-max_price = df["unit_price"].max()
-min_price = df["unit_price"].min()
+    st.markdown("""
+    Enter product details to estimate expected revenue.
+    
+    💡 Example:
+    - Price = 500  
+    - Shipping = 50  
+    - Installments = 2  
+    """)
 
-if avg_price > 200:
-    price_comment = "Products are generally high priced."
-else:
-    price_comment = "Products are generally affordable."
+    col1, col2, col3 = st.columns(3)
 
-if avg_quantity > 3:
-    demand_comment = "Customer demand appears strong."
-else:
-    demand_comment = "Customer demand appears moderate."
+    with col1:
+        price = st.number_input("💰 Product Price (₹)", 0.0, 10000.0, 500.0)
 
-st.info(
-f"""
-Average Product Price: **{avg_price:.2f}**
+    with col2:
+        freight = st.number_input("🚚 Shipping Cost (₹)", 0.0, 1000.0, 50.0)
 
-Average Quantity Sold: **{avg_quantity:.2f}**
+    with col3:
+        installments = st.number_input("💳 Installments", 1, 12, 1)
 
-Price Range: **{min_price:.2f} – {max_price:.2f}**
+    st.divider()
 
-Insights
+    if st.button("🚀 Predict Revenue"):
 
-{price_comment}
+        input_data = np.array([[price, freight, installments]])
 
-{demand_comment}
-"""
-)
+        with st.spinner("AI analyzing your input..."):
+            prediction = model.predict(input_data)
+
+        result = prediction[0]
+
+        st.success(f"💰 Estimated Revenue: ₹{result:.2f}")
+
+        # Confidence range (UX enhancement)
+        lower = result * 0.9
+        upper = result * 1.1
+
+        st.info(f"📊 Confidence Range: ₹{lower:.2f} – ₹{upper:.2f}")
+
+        # Interpretation
+        if result > 5000:
+            st.success("💸 High-value order")
+        elif result > 1000:
+            st.warning("📊 Moderate-value order")
+        else:
+            st.info("🛒 Low-value order")
+
+        st.divider()
+
+        # Visualization comparison
+        st.subheader("📊 Price Comparison with Dataset")
+
+        fig, ax = plt.subplots()
+        sns.histplot(data["price"], bins=30, kde=True, ax=ax)
+        ax.axvline(price, color="red", linestyle="--", label="Your Input")
+        ax.legend()
+
+        st.pyplot(fig)
+
+# =========================================================
+# 📄 REPORT SECTION
+# =========================================================
+
+elif page == "📄 Report":
+
+    st.title("📄 Generate Business Report")
+
+    summary = pd.DataFrame({
+        "Metric": ["Average Price", "Average Shipping", "Total Orders"],
+        "Value": [
+            data["price"].mean(),
+            data["freight_value"].mean(),
+            len(data)
+        ]
+    })
+
+    st.dataframe(summary)
+
+    csv = summary.to_csv(index=False).encode("utf-8")
+
+    st.download_button(
+        label="📥 Download Report",
+        data=csv,
+        file_name="ecommerce_report.csv",
+        mime="text/csv"
+    )
+
+# =========================================================
+# FOOTER
+# =========================================================
 
 st.markdown("---")
-st.markdown("Built using Python, Machine Learning, and Streamlit")
+st.markdown("✨ Built with Machine Learning & Streamlit | Nova 🚀")
