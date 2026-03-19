@@ -68,8 +68,17 @@ https://ecommerce-sales-estimator-xuaqw52ngidnkqmw9fygax.streamlit.app
 
 ---
 
+
 ## 📸 Screenshots
 
+### 📊 Dashboard
+![Dashboard](dashboard.png)
+
+### 📈 Data Insights
+![Graphs](graphs.png)
+
+### 🔮 Prediction Output
+![Prediction](predictedRevenue.png)
 
 ---
 
