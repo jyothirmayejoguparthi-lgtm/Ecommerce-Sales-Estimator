@@ -1,81 +1,79 @@
+# 🛒 Ecommerce Sales Estimator
 
-# 🛒 E-Commerce AI Revenue Predictor
-
-A **machine learning-powered web application** that predicts expected revenue for e-commerce orders using real-world data.
-
----
-
-## 🚀 Project Overview
-
-This project uses the **Olist E-Commerce Dataset** to build a predictive model that estimates **payment value (revenue)** based on:
-
-- Product Price 💰  
-- Shipping Cost 🚚  
-- Installments 💳  
-
-The application is deployed as an **interactive Streamlit dashboard** with advanced UI/UX and real-time predictions.
+An interactive Machine Learning web application that analyzes e-commerce data and predicts revenue based on user inputs.
 
 ---
 
-## ✨ Features
-
-### 🤖 Machine Learning
-- Multiple models trained:
-  - Linear Regression  
-  - Random Forest (selected)  
-  - XGBoost  
-- Model evaluation using:
-  - R² Score  
-  - MAE  
-  - RMSE  
+## 🚀 Live Demo
+👉 https://yourname.streamlit.app  (update after deployment)
 
 ---
 
-### 📊 Data Analysis
-- Price distribution visualization  
-- Shipping cost analysis  
-- Correlation heatmap  
-- Feature importance graph  
+## 📊 Features
+
+- 📈 Data visualization (Price, Shipping, Correlation)
+- 🤖 Multiple ML models (Linear Regression, Random Forest)
+- 📊 Model comparison with R², MAE, RMSE
+- 🔍 Feature importance visualization
+- 🔮 Real-time revenue prediction
+- 🎯 Confidence interval estimation
+- 📂 CSV upload functionality
+- 🧭 Sidebar for user inputs
 
 ---
 
-### 🌐 Interactive Dashboard
-- Clean and modern UI  
-- Sidebar navigation (Dashboard, Insights, Prediction, Report)  
-- Real-time revenue prediction  
-- Confidence range estimation  
-- Dynamic insights based on input  
+## 🧠 Machine Learning Models
+
+- Linear Regression
+- Random Forest Regressor
 
 ---
 
-### 📄 Additional Features
-- KPI metrics dashboard  
-- Downloadable business report  
-- Visual comparison with dataset  
+## 📊 Model Performance
+
+| Model | R² Score | MAE | RMSE |
+|------|--------|-----|------|
+| Linear Regression | 0.57 | 61.7 | 175.2 |
+| Random Forest | 0.90 | 34.6 | 84.9 |
+
+👉 Random Forest performs best on this dataset.
 
 ---
 
-## 🧠 Model Performance
+## 📁 Dataset
 
-| Model | R² Score |
-|------|---------|
-| Linear Regression | ~0.56 |
-| Random Forest ✅ | ~0.79 |
-| XGBoost | ~0.70 |
-
-👉 Random Forest was selected for best performance and generalization.
+- Olist E-commerce dataset  
+- Includes orders, items, and payment details  
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
 - Python  
-- Pandas & NumPy  
-- Scikit-learn  
-- XGBoost  
-- Matplotlib & Seaborn  
 - Streamlit  
+- Pandas  
+- NumPy  
+- Scikit-learn  
+- Matplotlib  
+- Seaborn  
 
 ---
 
-## 📂 Project Structure
+## 📌 Project Highlights
+
+- Built an end-to-end ML pipeline  
+- Designed an interactive dashboard  
+- Implemented model interpretability  
+- Created a user-friendly prediction system  
+
+---
+
+## 📸 Screenshots
+
+(Add your app screenshots here)
+
+---
+
+## 👨‍💻 Author
+
+Joguparthi Jyothirmaye
