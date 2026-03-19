@@ -5,7 +5,7 @@ An interactive Machine Learning web application that analyzes e-commerce data an
 ---
 
 ## 🚀 Live Demo
-👉 https://yourname.streamlit.app  (update after deployment)
+https://ecommerce-sales-estimator-xuaqw52ngidnkqmw9fygax.streamlit.app
 
 ---
 
@@ -70,7 +70,6 @@ An interactive Machine Learning web application that analyzes e-commerce data an
 
 ## 📸 Screenshots
 
-(Add your app screenshots here)
 
 ---
 
